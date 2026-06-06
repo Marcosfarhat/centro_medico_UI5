@@ -1,0 +1,94 @@
+{
+  "_version": "1.65.0",
+  "sap.app": {
+    "id": "centro.medico.admin.pacientes",
+    "type": "application",
+    "title": "Pacientes",
+    "description": "Gestión de Pacientes - Panel Administrativo",
+    "dataSources": {
+      "AdminService": {
+        "uri": "/odata/v4/admin/",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "4.0"
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "fullWidth": false
+  },
+  "sap.ui5": {
+    "dependencies": {
+      "minUI5Version": "1.120",
+      "libs": {
+        "sap.fe.templates": {}
+      }
+    },
+    "models": {
+      "": {
+        "dataSource": "AdminService",
+        "settings": {
+          "synchronizationMode": "None",
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "centro.medico.admin.pacientes.i18n.i18n"
+        }
+      }
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.fe.core.AppComponent"
+      },
+      "routes": [
+        {
+          "pattern": ":?query:",
+          "name": "PacientesList",
+          "target": "PacientesList"
+        },
+        {
+          "pattern": "Pacientes({key}):?query:",
+          "name": "PacientesDetail",
+          "target": "PacientesDetail"
+        }
+      ],
+      "targets": {
+        "PacientesList": {
+          "type": "Component",
+          "id": "PacientesList",
+          "name": "sap.fe.templates.ListReport",
+          "options": {
+            "settings": {
+              "entitySet": "Pacientes",
+              "variantManagement": "None",
+              "initialLoad": true,
+              "navigationSettings": {
+                "detail": {
+                  "route": "PacientesDetail"
+                }
+              }
+            }
+          }
+        },
+        "PacientesDetail": {
+          "type": "Component",
+          "id": "PacientesDetail",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "entitySet": "Pacientes",
+              "editableHeaderContent": false
+            }
+          }
+        }
+      }
+    }
+  }
+}
