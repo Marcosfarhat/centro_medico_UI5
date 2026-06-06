@@ -1,0 +1,5 @@
+ID,paciente_ID,medico_ID,fecha,hora,estado,motivo
+t1000,p1000,m1000,2026-06-10,09:00:00,confirmado,Control anual
+t1001,p1001,m1001,2026-06-11,10:30:00,pendiente,Fiebre en niño
+t1002,p1002,m1002,2026-06-12,08:00:00,pendiente,Dolor de cabeza
+t1003,p1003,m1003,2026-06-13,11:00:00,confirmado,Revisión rodilla

@@ -1,46 +1,39 @@
-using {
-  Currency,
-  cuid,
-  managed,
-  sap
-} from '@sap/cds/common';
+namespace centro.medico;
 
-namespace sap.capire.bookshop;
+using { cuid, managed } from '@sap/cds/common';
 
-entity Books : managed {
-  key ID       : Integer;
-      author   : Association to Authors @mandatory;
-      title    : localized String       @mandatory;
-      descr    : localized String;
-      genre    : Association to Genres;
-      stock    : Integer;
-      price    : Price;
-      currency : Currency;
+entity Especialidades : cuid, managed {
+  nombre       : String(100) @mandatory;
+  descripcion  : String(255);
+  medicos      : Composition of many Medicos on medicos.especialidad = $self;
 }
 
-entity Authors : managed {
-  key ID           : Integer;
-      name         : String @mandatory;
-      dateOfBirth  : Date;
-      dateOfDeath  : Date;
-      placeOfBirth : String;
-      placeOfDeath : String;
-      books        : Association to many Books
-                       on books.author = $self;
+entity Medicos : cuid, managed {
+  nombre       : String(100) @mandatory;
+  apellido     : String(100) @mandatory;
+  matricula    : String(20)  @mandatory;
+  especialidad : Association to Especialidades @mandatory;
+  turnos       : Composition of many Turnos on turnos.medico = $self;
 }
 
-/** Hierarchically organized Code List for Genres */
-entity Genres : cuid, sap.common.CodeList {
-  parent   : Association to Genres;
-  children : Composition of many Genres
-               on children.parent = $self;
+entity Pacientes : cuid, managed {
+  nombre          : String(100) @mandatory;
+  apellido        : String(100) @mandatory;
+  dni             : String(20)  @mandatory;
+  fechaNacimiento : Date;
+  telefono        : String(20);
+  email           : String(100);
+  obraSocial      : String(100);
+  numeroAfiliado  : String(50);
+  turnos          : Composition of many Turnos on turnos.paciente = $self;
 }
 
-type Price : Decimal(9, 2);
-
-
-// --------------------------------------------------------------------------------
-// Temporary workaround for this situation:
-// - Fiori apps in bookstore annotate Books with @fiori.draft.enabled.
-// - Because of that .csv data has to eagerly fill in ID_texts column.
-annotate Books with @fiori.draft.enabled;
+entity Turnos : cuid, managed {
+  paciente      : Association to Pacientes    @mandatory;
+  medico        : Association to Medicos      @mandatory;
+  fecha         : Date                        @mandatory;
+  hora          : Time                        @mandatory;
+  estado        : String(20) default 'pendiente'; // pendiente | confirmado | cancelado
+  motivo        : String(255);
+  observaciones : String(500);
+}

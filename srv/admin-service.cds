@@ -1,7 +1,18 @@
-using {sap.capire.bookshop as my} from '../db/schema';
+using { centro.medico as cm } from '../db/schema';
 
+// Servicio para el panel administrativo
+// Los administrativos tienen acceso completo a todas las entidades
 service AdminService {
-  entity Authors as projection on my.Authors;
-  entity Books   as projection on my.Books;
-  entity Genres  as projection on my.Genres;
+
+  // CRUD completo de pacientes
+  entity Pacientes      as projection on cm.Pacientes;
+
+  // CRUD completo de médicos
+  entity Medicos        as projection on cm.Medicos;
+
+  // CRUD completo de especialidades
+  entity Especialidades as projection on cm.Especialidades;
+
+  // CRUD completo de turnos
+  entity Turnos         as projection on cm.Turnos;
 }

@@ -1,0 +1,5 @@
+ID,nombre,apellido,dni,fechaNacimiento,telefono,email,obraSocial,numeroAfiliado
+p1000,Juan,García,30123456,1985-03-15,1155551234,juan.garcia@email.com,OSDE,123456
+p1001,María,Martínez,28456789,1990-07-22,1166662345,maria.martinez@email.com,Swiss Medical,234567
+p1002,Pedro,Díaz,35789012,2000-11-05,1177773456,pedro.diaz@email.com,PAMI,345678
+p1003,Sofía,Torres,40012345,2010-01-30,1188884567,sofia.torres@email.com,Galeno,456789
