@@ -23,24 +23,33 @@ Una vez terminada, el usuario va a customizar los botones y la UI.
 
 ## Estado actual del proyecto
 - [x] Proyecto inicializado con template SAP CAP bookshop
-- [x] Git inicializado (`git init`)
-- [x] Primer commit realizado (62 archivos)
-- [x] Repositorio creado en GitHub: https://github.com/Marcosfarhat/centro_medico_nodejs
-- [ ] Push a GitHub (en proceso - necesita Personal Access Token)
-- [ ] Reemplazar schema del bookshop con entidades del centro médico
-- [ ] Crear entidades: Pacientes, Médicos, Turnos, etc.
-- [ ] Construir panel de Pacientes
-- [ ] Construir panel de Administrativos
+- [x] Git inicializado y repositorio en GitHub: https://github.com/Marcosfarhat/centro_medico_nodejs
+- [x] Schema reemplazado con entidades del centro médico
+- [x] Entidades creadas: Especialidades, Médicos, Pacientes, Turnos
+- [x] Datos de prueba en CSV para desarrollo local
+- [x] AdminService construido (CRUD completo para administrativos)
+- [x] PacienteService construido (acceso restringido para pacientes)
+- [x] Archivos del template bookshop eliminados de app/ (admin-authors, admin-books, browse, genres)
+- [x] app/services.cds y app/common.cds actualizados para el centro médico
+- [x] Servidor cds watch corre sin errores en puerto 4004
+- [ ] Resolver acceso al servidor desde el navegador en BAS (exposición de puertos pendiente)
+- [ ] Anotaciones UI Fiori para los servicios (labels, listas, formularios)
 - [ ] Customización de UI y botones
 
-## Schema actual (a reemplazar)
-El schema en `db/schema.cds` todavía tiene el template de bookshop:
-- `Books`, `Authors`, `Genres` — DEBEN reemplazarse con entidades médicas
+## Estructura de entidades
+- **Especialidades**: nombre, descripcion → tiene muchos Médicos
+- **Medicos**: nombre, apellido, matricula, especialidad → tiene muchos Turnos
+- **Pacientes**: nombre, apellido, dni, fechaNacimiento, telefono, email, obraSocial, numeroAfiliado → tiene muchos Turnos
+- **Turnos**: paciente, medico, fecha, hora, estado (pendiente/confirmado/cancelado), motivo, observaciones
+
+## Servicios
+- **AdminService** → `/odata/v4/admin` — CRUD completo de todas las entidades
+- **PacienteService** → `/odata/v4/paciente` — Pacientes (editable), Turnos/Médicos/Especialidades (solo lectura)
 
 ## Próximos pasos
-1. Terminar el push a GitHub
-2. Diseñar el nuevo schema para centro médico
-3. Crear las entidades principales (Pacientes, Médicos, Turnos, etc.)
+1. Resolver visualización en browser desde BAS (exposición de puertos)
+2. Agregar anotaciones UI Fiori para mejorar las listas y formularios
+3. Customización de UI y botones
 
 ## Historial de sesiones
 
@@ -48,10 +57,17 @@ El schema en `db/schema.cds` todavía tiene el template de bookshop:
 - Se creó el proyecto desde template SAP CAP
 
 ### Sesión 2 - 06/06/2026
-- Se identificó que el proyecto existe en `/home/user/projects/centro_medico_node`
-- Se inicializó git
-- Se configuró usuario git (Marcosfarhat / marcosfarhat@gmail.com)
+- Se identificó proyecto en `/home/user/projects/centro_medico_node`
+- Se inicializó git y configuró usuario (Marcosfarhat / marcosfarhat@gmail.com)
 - Se hizo el primer commit con todos los archivos del template
 - Se creó repo en GitHub: https://github.com/Marcosfarhat/centro_medico_nodejs
-- Se intentó push (pendiente autenticación con Personal Access Token)
-- Se creó este archivo de contexto
+- Se reemplazó el schema de bookshop con entidades del centro médico
+- Se crearon AdminService y PacienteService
+- Se creó este archivo LEEME.md
+
+### Sesión 3 - 06/06/2026
+- Se hizo push exitoso a GitHub (los 3 commits anteriores)
+- Se eliminaron archivos del template bookshop de app/ (admin-authors, admin-books, browse, genres)
+- Se actualizaron app/services.cds y app/common.cds
+- El servidor cds watch corre sin errores (AdminService + PacienteService + 4 CSVs de datos)
+- Pendiente: resolver exposición de puertos en BAS para ver la app en el navegador
