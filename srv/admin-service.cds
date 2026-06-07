@@ -4,7 +4,8 @@ using { centro.medico as cm } from '../db/schema';
 // Los administrativos tienen acceso completo a todas las entidades
 service AdminService {
 
-  // CRUD completo de pacientes
+  // CRUD completo de pacientes — draft habilitado para edición en Fiori Elements
+  @odata.draft.enabled
   entity Pacientes      as projection on cm.Pacientes;
 
   // CRUD completo de médicos
