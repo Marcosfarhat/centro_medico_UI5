@@ -33,9 +33,9 @@ Una vez terminada, el usuario va a customizar los botones y la UI.
 - [x] Servidor cds watch accesible desde el navegador vía BAS (Ports: Get External URL)
 - [x] Anotaciones UI Fiori para AdminService (app/admin/annotations.cds)
 - [x] App admin-pacientes generada con SAP Fiori Application Generator
-      → Lista de pacientes con navegación a detalle funcionando
+      → Lista, detalle y edición con Draft funcionando (Edit / Save / Cancel / Delete)
+      → @odata.draft.enabled en AdminService.Pacientes
       → Generada con template "List Report Page" sobre AdminService/Pacientes
-- [ ] Probar y ajustar app admin-pacientes generada
 - [ ] Crear apps para Médicos, Turnos y Especialidades en AdminService
 - [ ] Crear app para panel de Pacientes (PacienteService)
 - [ ] Configurar SAP Fiori Launchpad para unificar todas las apps
@@ -97,4 +97,6 @@ Luego exponer el puerto 4004 desde BAS: `Ctrl+Shift+P` → "Ports: Get External 
 - Se corrigieron todos los CSVs con UUIDs válidos
 - Se aprendió a usar el SAP Fiori Application Generator (Template Wizard en BAS)
 - Se generó app admin-pacientes correctamente con el generator oficial
+- Se habilitó @odata.draft.enabled en Pacientes → botones Edit, Delete, Share funcionando
 - Lección aprendida: usar siempre el generator para apps Fiori Elements, no hacerlo a mano
+- Próxima sesión: generar apps para Médicos, Turnos y Especialidades con el generator
