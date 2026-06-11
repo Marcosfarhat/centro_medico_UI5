@@ -99,6 +99,11 @@ annotate AdminService.Medicos with @(
       $Type:  'UI.ReferenceFacet',
       Label:  'Datos del Médico',
       Target: '@UI.FieldGroup#DatosMedico'
+    },
+    {
+      $Type:  'UI.ReferenceFacet',
+      Label:  'Turnos',
+      Target: 'turnos/@UI.LineItem'
     }
   ],
 
