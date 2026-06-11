@@ -5,3 +5,5 @@ using from './admin/annotations';
 using from './admin-pacientes/annotations';
 
 using from './admin-medicos/annotations';
+
+using from './admin-especialidades/annotations';
