@@ -13,7 +13,7 @@ entity Medicos : cuid, managed {
   apellido     : String(100) @mandatory;
   matricula    : String(20)  @mandatory;
   especialidad : Association to Especialidades @mandatory;
-  turnos       : Composition of many Turnos on turnos.medico = $self;
+  turnos       : Association to many Turnos on turnos.medico = $self;
 }
 
 entity Pacientes : cuid, managed {

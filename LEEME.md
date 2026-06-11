@@ -36,7 +36,13 @@ Una vez terminada, el usuario va a customizar los botones y la UI.
       → Lista, detalle y edición con Draft funcionando (Edit / Save / Cancel / Delete)
       → @odata.draft.enabled en AdminService.Pacientes
       → Generada con template "List Report Page" sobre AdminService/Pacientes
-- [ ] Crear apps para Médicos, Turnos y Especialidades en AdminService
+- [x] App admin-medicos generada con SAP Fiori Application Generator
+      → Lista y detalle de Médicos funcionando
+      → @odata.draft.enabled en AdminService.Medicos
+      → Generada con template "List Report Page" sobre AdminService/Medicos con navigation entity Turnos
+      → Nota: Turnos NO aparece como sección en el detalle del médico (ver decisión de arquitectura abajo)
+- [ ] Decidir cómo mostrar turnos en el panel de médicos (Opción A: solo desde pacientes / Opción B: tabla read-only)
+- [ ] Crear apps para Turnos y Especialidades en AdminService
 - [ ] Crear app para panel de Pacientes (PacienteService)
 - [ ] Configurar SAP Fiori Launchpad para unificar todas las apps
 - [ ] Customización de UI y botones
@@ -55,7 +61,20 @@ Una vez terminada, el usuario va a customizar los botones y la UI.
 - **app/admin-pacientes** → Lista + detalle de Pacientes para administrativos
   - Generada con SAP Fiori Application Generator (List Report Page)
   - URL: `/admin-pacientes/webapp/index.html`
+  - Draft habilitado: Edit / Save / Cancel / Delete
+- **app/admin-medicos** → Lista + detalle de Médicos para administrativos
+  - Generada con SAP Fiori Application Generator (List Report Page)
+  - URL: `/admin-medicos/webapp/index.html`
+  - Draft habilitado: Edit / Save / Cancel / Delete
 - **app/admin** → Anotaciones compartidas del AdminService
+
+## Decisión de arquitectura: Turnos en Médicos
+`Medicos.turnos` fue cambiado de `Composition` a `Association` para evitar conflicto de draft:
+- CAP no permite que dos entidades con `@odata.draft.enabled` sean ambas dueñas de la misma entidad hija (`Turnos`)
+- Con `Composition` en ambas (Pacientes y Medicos), CAP intentaba crear las tablas de draft de Turnos dos veces
+- Solución: `Pacientes` es el dueño real de los turnos (Composition), `Medicos` solo los referencia (Association)
+- Consecuencia: Turnos no aparece como sección navegable en el Object Page de Médicos
+- Pendiente de decisión: mostrar turnos del médico como tabla read-only vía anotaciones (Opción B)
 
 ## Cómo levantar el servidor
 ```bash
@@ -100,3 +119,9 @@ Luego exponer el puerto 4004 desde BAS: `Ctrl+Shift+P` → "Ports: Get External 
 - Se habilitó @odata.draft.enabled en Pacientes → botones Edit, Delete, Share funcionando
 - Lección aprendida: usar siempre el generator para apps Fiori Elements, no hacerlo a mano
 - Próxima sesión: generar apps para Médicos, Turnos y Especialidades con el generator
+
+### Sesión 5 - 11/06/2026
+- Se generó app admin-medicos con SAP Fiori Application Generator (List Report + Object Page para Médicos)
+- Se resolvió conflicto de draft: Medicos.turnos cambió de Composition a Association en db/schema.cds
+- Ambas apps funcionando: admin-pacientes y admin-medicos
+- Pendiente: agregar tabla read-only de Turnos en el Object Page de Médicos via anotaciones (Opción B elegida)

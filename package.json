@@ -14,7 +14,8 @@
   },
   "scripts": {
     "start": "cds-serve",
-    "watch-admin-pacientes": "cds watch --open centro.medico.admin.adminpacientes/index.html?sap-ui-xx-viewCache=false --livereload false"
+    "watch-admin-pacientes": "cds watch --open centro.medico.admin.adminpacientes/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-admin-medicos": "cds watch --open centro.medico.admin.adminmedicos/index.html?sap-ui-xx-viewCache=false --livereload false"
   },
   "private": true,
   "cds": {
@@ -28,6 +29,7 @@
     "app/*"
   ],
   "sapux": [
-    "app/admin-pacientes"
+    "app/admin-pacientes",
+    "app/admin-medicos"
   ]
 }

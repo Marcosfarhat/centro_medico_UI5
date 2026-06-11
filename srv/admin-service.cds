@@ -8,7 +8,8 @@ service AdminService {
   @odata.draft.enabled
   entity Pacientes      as projection on cm.Pacientes;
 
-  // CRUD completo de médicos
+  // CRUD completo de médicos — draft habilitado para edición en Fiori Elements
+  @odata.draft.enabled
   entity Medicos        as projection on cm.Medicos;
 
   // CRUD completo de especialidades
