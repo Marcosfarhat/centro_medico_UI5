@@ -1,7 +1,8 @@
 using { centro.medico as cm } from '../db/schema';
 
 // Servicio para el panel administrativo
-// Los administrativos tienen acceso completo a todas las entidades
+// Solo accesible para usuarios con el rol 'admin'
+@requires: 'admin'
 service AdminService {
 
   // CRUD completo de pacientes — draft habilitado para edición en Fiori Elements

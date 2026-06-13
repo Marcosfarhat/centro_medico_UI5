@@ -1,7 +1,8 @@
 using { centro.medico as cm } from '../db/schema';
 
 // Servicio para el panel de pacientes
-// Los pacientes solo pueden ver sus propios datos y turnos
+// Solo accesible para usuarios con el rol 'paciente'
+@requires: 'paciente'
 service PacienteService {
 
   // Pacientes pueden ver y editar su propio perfil

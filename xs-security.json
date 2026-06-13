@@ -1,19 +1,49 @@
 {
+  "xsappname": "centro-medico",
+  "tenant-mode": "dedicated",
   "scopes": [
     {
       "name": "$XSAPPNAME.admin",
-      "description": "admin"
+      "description": "Acceso completo al panel administrativo"
+    },
+    {
+      "name": "$XSAPPNAME.paciente",
+      "description": "Acceso al portal del paciente"
     }
   ],
   "attributes": [],
   "role-templates": [
     {
       "name": "admin",
-      "description": "generated",
+      "description": "Rol para personal administrativo",
       "scope-references": [
         "$XSAPPNAME.admin"
       ],
       "attribute-references": []
+    },
+    {
+      "name": "paciente",
+      "description": "Rol para pacientes",
+      "scope-references": [
+        "$XSAPPNAME.paciente"
+      ],
+      "attribute-references": []
+    }
+  ],
+  "role-collections": [
+    {
+      "name": "CentroMedico_Admin",
+      "description": "Administradores del centro médico",
+      "role-template-references": [
+        "$XSAPPNAME.admin"
+      ]
+    },
+    {
+      "name": "CentroMedico_Paciente",
+      "description": "Pacientes del centro médico",
+      "role-template-references": [
+        "$XSAPPNAME.paciente"
+      ]
     }
   ]
 }
