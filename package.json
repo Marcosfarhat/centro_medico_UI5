@@ -25,18 +25,7 @@
         "auth": "xsuaa"
       },
       "auth": {
-        "kind": "mocked",
-        "users": {
-          "alice": {
-            "password": "admin123",
-            "roles": ["admin"]
-          },
-          "bob": {
-            "password": "paciente123",
-            "roles": ["paciente"]
-          },
-          "*": true
-        }
+        "kind": "mocked"
       }
     }
   },
