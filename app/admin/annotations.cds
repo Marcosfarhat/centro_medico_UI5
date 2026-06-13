@@ -178,7 +178,11 @@ annotate AdminService.Turnos with @(
     { Value: hora,              Label: 'Hora'     },
     { Value: paciente.apellido, Label: 'Paciente' },
     { Value: medico.apellido,   Label: 'Médico'   },
-    { Value: estado,            Label: 'Estado'   }
+    {
+      Value:       estado,
+      Label:       'Estado',
+      Criticality: estadoCriticality
+    }
   ],
 
   UI.HeaderInfo: {

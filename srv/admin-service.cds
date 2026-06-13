@@ -16,5 +16,12 @@ service AdminService {
   entity Especialidades as projection on cm.Especialidades;
 
   // CRUD completo de turnos — sin draft propio (Turnos pertenece a la composition de Pacientes)
-  entity Turnos         as projection on cm.Turnos;
+  entity Turnos as projection on cm.Turnos {
+    *,
+    case estado
+      when 'confirmado' then 3
+      when 'cancelado'  then 1
+      else                   2
+    end as estadoCriticality : Integer
+  };
 }

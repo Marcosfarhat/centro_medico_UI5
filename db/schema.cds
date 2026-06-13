@@ -2,6 +2,12 @@ namespace centro.medico;
 
 using { cuid, managed } from '@sap/cds/common';
 
+type EstadoTurno : String(20) enum {
+  pendiente  = 'pendiente';
+  confirmado = 'confirmado';
+  cancelado  = 'cancelado';
+}
+
 entity Especialidades : cuid, managed {
   nombre       : String(100) @mandatory;
   descripcion  : String(255);
@@ -33,7 +39,7 @@ entity Turnos : cuid, managed {
   medico        : Association to Medicos      @mandatory;
   fecha         : Date                        @mandatory;
   hora          : Time                        @mandatory;
-  estado        : String(20) default 'pendiente'; // pendiente | confirmado | cancelado
+  estado        : EstadoTurno default 'pendiente';
   motivo        : String(255);
   observaciones : String(500);
 }
