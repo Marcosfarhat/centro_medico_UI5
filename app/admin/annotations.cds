@@ -170,6 +170,38 @@ annotate AdminService.Turnos with {
   estado        @title: 'Estado';
   motivo        @title: 'Motivo';
   observaciones @title: 'Observaciones';
+
+  // En lugar del UUID, mostrar el apellido del paciente en los campos
+  paciente @(
+    Common.Text:            paciente.apellido,
+    Common.TextArrangement: #TextOnly,
+    Common.ValueList: {
+      CollectionPath: 'Pacientes',
+      Parameters: [
+        // Out: el campo que se guarda en la base de datos al elegir
+        { $Type: 'Common.ValueListParameterOut',         LocalDataProperty: paciente_ID, ValueListProperty: 'ID'      },
+        // DisplayOnly: columnas que se muestran en el buscador pero no se guardan
+        { $Type: 'Common.ValueListParameterDisplayOnly', ValueListProperty: 'apellido' },
+        { $Type: 'Common.ValueListParameterDisplayOnly', ValueListProperty: 'nombre'   },
+        { $Type: 'Common.ValueListParameterDisplayOnly', ValueListProperty: 'dni'      }
+      ]
+    }
+  );
+
+  // Lo mismo para el médico
+  medico @(
+    Common.Text:            medico.apellido,
+    Common.TextArrangement: #TextOnly,
+    Common.ValueList: {
+      CollectionPath: 'Medicos',
+      Parameters: [
+        { $Type: 'Common.ValueListParameterOut',         LocalDataProperty: medico_ID,  ValueListProperty: 'ID'       },
+        { $Type: 'Common.ValueListParameterDisplayOnly', ValueListProperty: 'apellido'  },
+        { $Type: 'Common.ValueListParameterDisplayOnly', ValueListProperty: 'nombre'    },
+        { $Type: 'Common.ValueListParameterDisplayOnly', ValueListProperty: 'matricula' }
+      ]
+    }
+  );
 }
 
 annotate AdminService.Turnos with @(
