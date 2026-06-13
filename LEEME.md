@@ -46,9 +46,15 @@ Una vez terminada, el usuario va a customizar los botones y la UI.
 - [x] App admin-turnos creada manualmente (List Report Page sobre AdminService/Turnos)
       → Lista y detalle de Turnos funcionando
       → @odata.draft.enabled en AdminService.Turnos (Edit / Save / Cancel / Delete / New)
-- [ ] Crear app para panel de Pacientes (PacienteService)
-- [ ] Configurar SAP Fiori Launchpad para unificar todas las apps
-- [ ] Customización de UI y botones
+- [x] App mis-turnos creada (portal del paciente - lista de turnos, solo lectura)
+      → URL: /centro.medico.paciente.misturnos/index.html
+- [x] App mi-perfil creada (portal del paciente - datos personales)
+      → URL: /centro.medico.paciente.miperfil/index.html
+- [x] Fiori Launchpad creado con tiles para todas las apps
+      → URL: /centro.medico.launchpad/index.html
+      → Panel Administrativo: Pacientes, Médicos, Especialidades, Agenda
+      → Portal del Paciente: Mis Turnos, Mi Perfil
+- [ ] Customización de UI y estética
 
 ## Estructura de entidades
 - **Especialidades**: nombre, descripcion → tiene muchos Médicos
@@ -95,9 +101,7 @@ cds watch
 Luego exponer el puerto 4004 desde BAS: `Ctrl+Shift+P` → "Ports: Get External URL" → 4004
 
 ## Próximos pasos
-1. Crear app para el panel del paciente (PacienteService)
-2. Configurar el Fiori Launchpad para unificar todo
-3. Customización de UI y estética (próxima sesión)
+1. Customización de UI y estética (colores, íconos, labels, layout)
 
 ## Historial de sesiones
 
@@ -144,3 +148,12 @@ Luego exponer el puerto 4004 desde BAS: `Ctrl+Shift+P` → "Ports: Get External 
 - Se agregó sección "Turnos" en el Object Page de Pacientes (Target: 'turnos/@UI.LineItem')
   → botones New/Edit/Delete funcionando gracias a la Composition + draft de Pacientes
 - Próxima sesión: cambios de estética y UI (labels, colores, columnas, etc.)
+
+### Sesión 7 - 13/06/2026
+- Value Help para Paciente y Médico en formulario de Turnos (@Common.ValueList)
+- Anotaciones PacienteService (app/paciente/annotations.cds)
+- App mis-turnos: portal del paciente para ver sus turnos
+- App mi-perfil: portal del paciente para ver sus datos personales
+- Fiori Launchpad con tiles para todas las apps (HTML/CSS puro)
+- Fix: manifest.json requerido por cds-plugin-ui5 en el launchpad
+- Funcionalidad completa — próxima etapa: estética y customización
