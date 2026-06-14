@@ -27,9 +27,25 @@
       "auth": {
         "kind": "mocked",
         "users": {
-          "dev": {
-            "password": "dev",
-            "roles": ["admin", "paciente"]
+          "admin": {
+            "password": "admin",
+            "roles": ["admin"]
+          },
+          "juan.garcia@email.com": {
+            "password": "pass1",
+            "roles": ["paciente"]
+          },
+          "maria.martinez@email.com": {
+            "password": "pass2",
+            "roles": ["paciente"]
+          },
+          "pedro.diaz@email.com": {
+            "password": "pass3",
+            "roles": ["paciente"]
+          },
+          "sofia.torres@email.com": {
+            "password": "pass4",
+            "roles": ["paciente"]
           }
         }
       }

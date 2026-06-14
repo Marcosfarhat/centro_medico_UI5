@@ -63,6 +63,10 @@ Una vez terminada, el usuario va a customizar los botones y la UI.
 - [x] Value Help para Paciente y Médico en formulario de Turnos
       → Dropdown con nombre/apellido en lugar de UUID
 - [x] Colores por estado de turno (verde/naranja/rojo) y dropdown de EstadoTurno
+- [x] Filtrado por usuario logueado en PacienteService
+      → @restrict: cada paciente ve solo su propio perfil y sus propios turnos
+      → $user en la condición where se reemplaza con el email del usuario logueado
+      → En dev: server.js inyecta credenciales por ruta (admin → /odata/v4/admin, paciente test → /odata/v4/paciente)
 - [ ] Customización de UI y estética
 
 ## Estructura de entidades
@@ -157,6 +161,13 @@ Luego exponer el puerto 4004 desde BAS: `Ctrl+Shift+P` → "Ports: Get External 
 - Se agregó sección "Turnos" en el Object Page de Pacientes (Target: 'turnos/@UI.LineItem')
   → botones New/Edit/Delete funcionando gracias a la Composition + draft de Pacientes
 - Próxima sesión: cambios de estética y UI (labels, colores, columnas, etc.)
+
+### Sesión 9 - 14/06/2026
+- Implementado filtrado por usuario en PacienteService con @restrict y $user
+- Configurados usuarios mockeados: admin + 4 pacientes con sus emails reales
+- server.js actualizado: inyecta credenciales por ruta, sobreescribiendo caché del browser
+- Verificado: portal del paciente muestra solo los turnos del paciente logueado
+- Pendiente: en producción XSUAA maneja el login real; en dev se simula con mocked auth
 
 ### Sesión 8 - 14/06/2026
 - Diagnóstico y fix del problema de autenticación en desarrollo
