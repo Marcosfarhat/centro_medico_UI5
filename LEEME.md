@@ -162,23 +162,59 @@ Luego exponer el puerto 4004 desde BAS: `Ctrl+Shift+P` → "Ports: Get External 
   → botones New/Edit/Delete funcionando gracias a la Composition + draft de Pacientes
 - Próxima sesión: cambios de estética y UI (labels, colores, columnas, etc.)
 
-### Sesión 9 - 14/06/2026
-- Implementado filtrado por usuario en PacienteService con @restrict y $user
-- Configurados usuarios mockeados: admin + 4 pacientes con sus emails reales
-- server.js actualizado: inyecta credenciales por ruta, sobreescribiendo caché del browser
-- Verificado: portal del paciente muestra solo los turnos del paciente logueado
-- Pendiente: en producción XSUAA maneja el login real; en dev se simula con mocked auth
+### Sesión 8 + 9 - 14/06/2026
 
-### Sesión 8 - 14/06/2026
-- Diagnóstico y fix del problema de autenticación en desarrollo
-- Problema: mocked auth sin usuarios → OData devolvía 401 → Fiori mostraba "Cannot login w/o session"
-- Causa raíz: el "Cannot login w/o session" era del proxy de BAS (sesión expirada), no de CAP
-- Fix 1 (package.json): usuario 'dev' con roles admin + paciente
-- Fix 2 (server.js): middleware que inyecta credenciales dev automáticamente en modo mocked
-  → En dev: requests sin auth header reciben Basic dev:dev antes de llegar al auth de CAP
-  → En producción: kind es 'xsuaa', el middleware no se activa
-- Acceso correcto en BAS: Ctrl+Click en localhost:4004 del terminal (no External URL directo)
-- Resultado: los 6 tiles del launchpad y todas las apps funcionando correctamente
+#### Problema que teníamos
+- `@requires: 'admin'` y `@requires: 'paciente'` en los servicios + mocked auth sin usuarios → OData devolvía 401
+- Fiori mostraba "Cannot login w/o session" → ese error era del PROXY DE BAS (sesión de BAS expirada), no de CAP
+- En modo incógnito: el proxy de BAS también rechaza (no hay sesión BAS) → no sirve para testear
+
+#### Cómo acceder correctamente en BAS
+- En la terminal de BAS donde corre `cds watch`, hacer **Ctrl+Click** sobre `http://localhost:4004`
+- BAS intercepta ese click y abre la app via su proxy con la sesión ya autenticada
+- **NO** copiar y pegar el External URL en una ventana nueva/incógnita (pierde la sesión)
+
+#### Fix de autenticación (server.js)
+- `server.js` en la raíz es el entry point de CAP → se carga al arrancar
+- Usa `cds.on('bootstrap', app => ...)` para agregar middleware de Express ANTES que el auth de CAP
+- Inyecta automáticamente el usuario correcto según la ruta:
+  - `/odata/v4/admin` → credenciales de `admin`
+  - `/odata/v4/paciente` → credenciales del paciente de prueba actual
+- **Sobreescribe siempre** el header Authorization (no condicional) para ignorar caché del browser
+- En producción (`auth.kind = 'xsuaa'`): el bloque no se activa
+
+#### Por qué Basic Auth tiene limitaciones en desarrollo
+- Basic Auth guarda credenciales **por host** (no por ruta)
+- Si te logueaste como `admin`, el browser manda esas credenciales para TODAS las rutas del mismo host
+- El portal del paciente recibía credenciales de admin → 403 (rol incorrecto) → página en blanco
+- Solución: el middleware sobreescribe el header según la ruta, ignorando el caché
+
+#### Filtrado por usuario logueado (@restrict)
+- `@restrict: [{ grant: '*', where: 'email = $user' }]` en `Pacientes`
+  → cada paciente solo puede ver/editar su propio perfil
+- `@restrict: [{ grant: 'READ', where: 'paciente.email = $user' }]` en `Turnos`
+  → cada paciente solo ve sus propios turnos
+- `$user` es la variable especial de CAP = el ID del usuario logueado (= nombre de usuario en mocked auth)
+- En mocked auth: nombre de usuario = email del paciente → la comparación funciona perfectamente
+
+#### Usuarios configurados (package.json)
+- `admin` / `admin` → rol admin → ve todo en AdminService
+- `juan.garcia@email.com` / `pass1` → rol paciente → ve solo sus datos
+- `maria.martinez@email.com` / `pass2` → rol paciente
+- `pedro.diaz@email.com` / `pass3` → rol paciente
+- `sofia.torres@email.com` / `pass4` → rol paciente
+
+#### Para cambiar el paciente de prueba en desarrollo
+Modificar esta línea en `server.js`:
+```javascript
+const pacienteCreds = Buffer.from('juan.garcia@email.com:pass1').toString('base64')
+```
+Cambiar por el email y password del paciente que se quiere probar.
+
+#### En producción
+- XSUAA maneja el login real (OAuth2/SAML2)
+- El token JWT de XSUAA contiene el email del usuario
+- CAP usa ese email en `$user` → el @restrict filtra correctamente sin cambios en el código
 
 ### Sesión 7 - 13/06/2026
 - Value Help para Paciente y Médico en formulario de Turnos (@Common.ValueList)
