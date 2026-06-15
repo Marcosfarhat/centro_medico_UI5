@@ -67,7 +67,10 @@ Una vez terminada, el usuario va a customizar los botones y la UI.
       → @restrict: cada paciente ve solo su propio perfil y sus propios turnos
       → $user en la condición where se reemplaza con el email del usuario logueado
       → En dev: server.js inyecta credenciales por ruta (admin → /odata/v4/admin, paciente test → /odata/v4/paciente)
-- [ ] Customización de UI y estética
+- [ ] Customización de UI con componentes UI5 (ui5.sap.com)
+      → Plan: usar extensiones de Fiori Elements para agregar controles UI5 custom
+      → Primer objetivo: sap.m.Button + sap.m.MessageToast en admin-turnos
+      → Otros controles identificados: SegmentedButton (filtro estado), ObjectStatus, Avatar, MessageBox
 
 ## Estructura de entidades
 - **Especialidades**: nombre, descripcion → tiene muchos Médicos
@@ -161,6 +164,20 @@ Luego exponer el puerto 4004 desde BAS: `Ctrl+Shift+P` → "Ports: Get External 
 - Se agregó sección "Turnos" en el Object Page de Pacientes (Target: 'turnos/@UI.LineItem')
   → botones New/Edit/Delete funcionando gracias a la Composition + draft de Pacientes
 - Próxima sesión: cambios de estética y UI (labels, colores, columnas, etc.)
+
+### Sesión 10 - 15/06/2026
+- Definido plan de customización UI usando ui5.sap.com
+- Concepto clave: nuestras apps usan Fiori Elements → para agregar controles UI5 se usan EXTENSIONES
+  (no se escribe XML/JS directamente, se extiende lo generado)
+- Próxima sesión: implementar sap.m.Button + sap.m.MessageToast en admin-turnos como primer ejercicio
+- Cómo usar ui5.sap.com: Controls → buscar control → pestaña Samples → botón "Try it" para editar en vivo
+
+#### Controles UI5 planificados por orden de práctica
+1. `sap.m.Button` + `sap.m.MessageToast` → botón "Confirmar Turno" con notificación (aprende: extensión de controlador)
+2. `sap.m.SegmentedButton` → filtro rápido por estado en lista de turnos (aprende: filtros interactivos)
+3. `sap.m.ObjectStatus` → estado del turno con color semántico (aprende: indicadores visuales)
+4. `sap.m.Avatar` → ícono en header del paciente (aprende: personalización Object Page)
+5. `sap.m.MessageBox` → confirmación antes de cancelar turno (aprende: diálogos modales)
 
 ### Sesión 8 + 9 - 14/06/2026
 
