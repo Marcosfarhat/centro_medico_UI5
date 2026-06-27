@@ -1,0 +1,36 @@
+<core:FragmentDefinition
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core"
+  xmlns:form="sap.ui.layout.form"
+>
+  <Dialog id="crearTurnoDialog" title="Crear Turno" contentWidth="25rem">
+    <content>
+      <form:SimpleForm editable="true" layout="ResponsiveGridLayout">
+        <Label text="Paciente"/>
+        <Select id="selectPaciente" items="{/Pacientes}" forceSelection="false">
+          <core:Item key="{ID}" text="{apellido}, {nombre}"/>
+        </Select>
+
+        <Label text="Médico"/>
+        <Select id="selectMedico" items="{/Medicos}" forceSelection="false">
+          <core:Item key="{ID}" text="{apellido}, {nombre}"/>
+        </Select>
+
+        <Label text="Fecha"/>
+        <DatePicker id="dpFecha" valueFormat="yyyy-MM-dd" displayFormat="dd/MM/yyyy"/>
+
+        <Label text="Hora"/>
+        <TimePicker id="tpHora" valueFormat="HH:mm:ss" displayFormat="HH:mm"/>
+
+        <Label text="Motivo"/>
+        <Input id="inputMotivo"/>
+      </form:SimpleForm>
+    </content>
+    <beginButton>
+      <Button text="Crear" type="Emphasized" press="onConfirmarCrearTurno"/>
+    </beginButton>
+    <endButton>
+      <Button text="Cancelar" press="onCancelarCrearTurno"/>
+    </endButton>
+  </Dialog>
+</core:FragmentDefinition>

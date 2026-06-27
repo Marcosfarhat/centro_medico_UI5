@@ -9,8 +9,16 @@ sap.ui.define([
 
     metadata: {
       methods: {
-        onConfirmarTurno: { public: true, final: true }
+        onConfirmarTurno: { public: true, final: true },
+        onVolverInicio: { public: true, final: true }
       }
+    },
+
+    // Navega de vuelta a la lista de Turnos (la ruta "TurnosList" del manifest),
+    // sin depender del botón de "atrás" del navegador.
+    onVolverInicio: function () {
+      var oRouter = this.base.getAppComponent().getRouter();
+      oRouter.navTo("TurnosList");
     },
 
     onConfirmarTurno: function () {
@@ -46,7 +54,14 @@ sap.ui.define([
         oDraftEdit.setParameter("PreserveChanges", true);
 
         return oDraftEdit.execute().then(function () {
-          var oPacienteDraftContext = oDraftEdit.getBoundContext();
+          // No reusamos oDraftEdit.getBoundContext() como base de la próxima acción:
+          // ese contexto "recuerda" que vino de una operación (.../draftEdit(...)) y
+          // UI5 no permite encadenar otra operación encima ("nested deferred operation
+          // bindings"). Pedimos un contexto nuevo y limpio al mismo Paciente en draft,
+          // direccionándolo directo por ID + IsActiveEntity=false.
+          var oPacienteDraftContext = oModel.bindContext(
+            "/Pacientes(ID='" + oTurno.paciente_ID + "',IsActiveEntity=false)"
+          ).getBoundContext();
 
           // 3. Dentro del draft, el turno ya existe en su propio entity set,
           //    direccionable con IsActiveEntity=false.
@@ -60,11 +75,25 @@ sap.ui.define([
             // 4. draftActivate sobre el Paciente: guarda todo (root + turno hijo).
             var oDraftActivate = oModel.bindContext("AdminService.draftActivate(...)", oPacienteDraftContext);
             return oDraftActivate.execute();
+          }).catch(function (oStepError) {
+            // Si algo falló DESPUÉS de abrir el draft (paso 2), el Paciente queda
+            // trabado en edición y nadie más puede tocarlo hasta descartarlo a mano.
+            // Lo descartamos automáticamente (igual al botón "Cancel" de la UI) y
+            // recién ahí propagamos el error original para que lo vea el usuario.
+            return oPacienteDraftContext.delete().catch(function () {
+              // si ni el descarte funciona, no hay nada más que hacer acá
+            }).then(function () {
+              throw oStepError;
+            });
           });
         });
       }).then(function () {
         MessageToast.show("Turno confirmado");
-        return oTurnoContext.requestRefresh();
+        // Refrescamos todo el modelo: como escribimos los datos "por debajo" del
+        // framework (llamadas directas al modelo, no el flujo estándar de Save),
+        // Fiori Elements no sabe que algo cambió. Esto evita tener que hacer un
+        // hard refresh manual para ver el cambio reflejado en la lista al volver.
+        return oModel.refresh();
       }).catch(function (oError) {
         MessageBox.error("No se pudo confirmar el turno: " + oError.message);
       });

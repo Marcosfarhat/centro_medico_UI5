@@ -116,6 +116,16 @@
                     "type": "ResponsiveTable"
                   }
                 }
+              },
+              "content": {
+                "header": {
+                  "actions": {
+                    "CrearTurno": {
+                      "press": ".extension.centro.medico.admin.adminturnos.ext.controller.ListReportExt.onCrearTurno",
+                      "text": "Crear Turno"
+                    }
+                  }
+                }
               }
             }
           }
@@ -132,8 +142,12 @@
                 "header": {
                   "actions": {
                     "ConfirmarTurno": {
-                      "press": "centro.medico.admin.adminturnos.ext.controller.ObjectPageExt.onConfirmarTurno",
+                      "press": ".extension.centro.medico.admin.adminturnos.ext.controller.ObjectPageExt.onConfirmarTurno",
                       "text": "Confirmar Turno"
+                    },
+                    "VolverInicio": {
+                      "press": ".extension.centro.medico.admin.adminturnos.ext.controller.ObjectPageExt.onVolverInicio",
+                      "text": "Volver al inicio"
                     }
                   }
                 }
@@ -148,6 +162,9 @@
         "sap.ui.controllerExtensions": {
           "sap.fe.templates.ObjectPage.ObjectPageController": {
             "controllerName": "centro.medico.admin.adminturnos.ext.controller.ObjectPageExt"
+          },
+          "sap.fe.templates.ListReport.ListReportController": {
+            "controllerName": "centro.medico.admin.adminturnos.ext.controller.ListReportExt"
           }
         }
       }

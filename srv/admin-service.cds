@@ -16,7 +16,12 @@ service AdminService {
   // CRUD completo de especialidades
   entity Especialidades as projection on cm.Especialidades;
 
-  // CRUD completo de turnos — sin draft propio (Turnos pertenece a la composition de Pacientes)
+  // CRUD completo de turnos — sin draft propio (Turnos pertenece a la composition de Pacientes).
+  // @UI.CreateHidden oculta el botón "Crear" estándar de Fiori Elements (no puede funcionar,
+  // un turno no se inserta directo — ver botón custom "Crear Turno" en admin-turnos) sin tocar
+  // la capacidad real de insertar: a diferencia de @Capabilities.InsertRestrictions.Insertable,
+  // esto es solo de UI y no bloquea el deep-create vía la composition de Pacientes.
+  @UI.CreateHidden: true
   entity Turnos as projection on cm.Turnos {
     *,
     case estado
