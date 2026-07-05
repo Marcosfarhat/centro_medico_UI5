@@ -88,19 +88,6 @@ annotate AdminService.Medicos with {
   apellido     @title: 'Apellido';
   matricula    @title: 'Matrícula';
   especialidad @title: 'Especialidad';
-
-  especialidad @(
-    Common.Text:            especialidad.nombre,
-    Common.TextArrangement: #TextOnly,
-    Common.ValueList: {
-      CollectionPath: 'Especialidades',
-      Parameters: [
-        { $Type: 'Common.ValueListParameterOut',         LocalDataProperty: especialidad_ID, ValueListProperty: 'ID'         },
-        { $Type: 'Common.ValueListParameterDisplayOnly', ValueListProperty: 'nombre'      },
-        { $Type: 'Common.ValueListParameterDisplayOnly', ValueListProperty: 'descripcion' }
-      ]
-    }
-  );
 }
 
 annotate AdminService.Medicos with @(

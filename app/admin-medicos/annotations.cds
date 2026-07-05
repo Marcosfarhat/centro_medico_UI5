@@ -1,5 +1,9 @@
 using AdminService as service from '../../srv/admin-service';
 annotate service.Medicos with {
+    especialidad @(
+        Common.Text:            especialidad.nombre,
+        Common.TextArrangement: #TextOnly
+    );
     especialidad @Common.ValueList : {
         $Type : 'Common.ValueListType',
         CollectionPath : 'Especialidades',
