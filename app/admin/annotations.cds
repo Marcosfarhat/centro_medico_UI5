@@ -88,6 +88,19 @@ annotate AdminService.Medicos with {
   apellido     @title: 'Apellido';
   matricula    @title: 'Matrícula';
   especialidad @title: 'Especialidad';
+
+  especialidad @(
+    Common.Text:            especialidad.nombre,
+    Common.TextArrangement: #TextOnly,
+    Common.ValueList: {
+      CollectionPath: 'Especialidades',
+      Parameters: [
+        { $Type: 'Common.ValueListParameterOut',         LocalDataProperty: especialidad_ID, ValueListProperty: 'ID'         },
+        { $Type: 'Common.ValueListParameterDisplayOnly', ValueListProperty: 'nombre'      },
+        { $Type: 'Common.ValueListParameterDisplayOnly', ValueListProperty: 'descripcion' }
+      ]
+    }
+  );
 }
 
 annotate AdminService.Medicos with @(
@@ -174,6 +187,7 @@ annotate AdminService.Turnos with {
   fecha         @title: 'Fecha';
   hora          @title: 'Hora';
   estado        @title: 'Estado';
+  estado @Common.ValueListWithFixedValues;
   motivo        @title: 'Motivo';
   observaciones @title: 'Observaciones';
 
@@ -211,6 +225,7 @@ annotate AdminService.Turnos with {
 }
 
 annotate AdminService.Turnos with @(
+  UI.SelectionFields: [ estado ],
   UI.LineItem: [
     { Value: fecha,             Label: 'Fecha'    },
     { Value: hora,              Label: 'Hora'     },

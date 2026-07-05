@@ -127,8 +127,27 @@
           "options": {
             "settings": {
               "editableHeaderContent": false,
-              "contextPath": "/Pacientes"
+              "contextPath": "/Pacientes",
+              "content": {
+                "header": {
+                  "actions": {
+                    "VolverInicio": {
+                      "press": ".extension.centro.medico.admin.adminpacientes.ext.controller.ObjectPageExt.onVolverInicio",
+                      "text": "Volver al inicio"
+                    }
+                  }
+                }
+              }
             }
+          }
+        }
+      }
+    },
+    "extends": {
+      "extensions": {
+        "sap.ui.controllerExtensions": {
+          "sap.fe.templates.ObjectPage.ObjectPageController": {
+            "controllerName": "centro.medico.admin.adminpacientes.ext.controller.ObjectPageExt"
           }
         }
       }
