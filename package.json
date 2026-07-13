@@ -28,6 +28,11 @@
       "auth": {
         "kind": "mocked",
         "users": {
+          "*": {
+            "roles": [
+              "paciente"
+            ]
+          },
           "admin": {
             "password": "admin",
             "roles": [
@@ -35,31 +40,26 @@
             ]
           },
           "marcosfarhat@gmail.com": {
-            "password": "pass5",
             "roles": [
               "paciente"
             ]
           },
           "juan.garcia@email.com": {
-            "password": "pass1",
             "roles": [
               "paciente"
             ]
           },
           "maria.martinez@email.com": {
-            "password": "pass2",
             "roles": [
               "paciente"
             ]
           },
           "pedro.diaz@email.com": {
-            "password": "pass3",
             "roles": [
               "paciente"
             ]
           },
           "sofia.torres@email.com": {
-            "password": "pass4",
             "roles": [
               "paciente"
             ]

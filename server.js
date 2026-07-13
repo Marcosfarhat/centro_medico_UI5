@@ -18,7 +18,16 @@ cds.on('bootstrap', (app) => {
       if (req.path.startsWith('/odata/v4/admin') || req.path.startsWith('/odata/v4/ai')) {
         req.headers.authorization = `Basic ${adminCreds}`
       } else if (req.path.startsWith('/odata/v4/paciente')) {
-        req.headers.authorization = `Basic ${pacienteCreds}`
+        // Si el caller manda el mail del paciente logueado (la app del asistente
+        // lo pone en el header 'x-paciente-email'), usamos ESE mail como identidad,
+        // asi $user = ese mail y el @restrict del PacienteService filtra sus turnos.
+        // Si no viene (ej. las apps mis-turnos/mi-perfil), usamos el paciente de prueba.
+        const email = req.headers['x-paciente-email']
+        if (email) {
+          req.headers.authorization = `Basic ${Buffer.from(`${email}:x`).toString('base64')}`
+        } else {
+          req.headers.authorization = `Basic ${pacienteCreds}`
+        }
       }
       next()
     })

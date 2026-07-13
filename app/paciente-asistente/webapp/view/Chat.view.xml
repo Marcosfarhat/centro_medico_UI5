@@ -1,0 +1,84 @@
+<mvc:View
+  controllerName="centro.medico.paciente.asistente.controller.Chat"
+  xmlns="sap.m"
+  xmlns:mvc="sap.ui.core.mvc"
+  displayBlock="true"
+  height="100%"
+>
+  <!-- App freestyle con 3 paginas; se navega con oApp.to(...) desde el controller -->
+  <App id="portalApp">
+
+    <!-- Pagina 1: login por mail -->
+    <Page id="pageLogin" title="Centro Médico">
+      <VBox class="sapUiLargeMargin" alignItems="Center" justifyContent="Center">
+        <Title text="Ingresá con tu email" level="H2" class="sapUiMediumMarginBottom" />
+        <Input
+          id="loginEmail"
+          type="Email"
+          placeholder="tu.email@ejemplo.com"
+          width="20rem"
+          submit=".onIngresar"
+        />
+        <Button
+          text="Ingresar"
+          type="Emphasized"
+          press=".onIngresar"
+          class="sapUiSmallMarginTop"
+        />
+      </VBox>
+    </Page>
+
+    <!-- Pagina 2: asistente (chat) -->
+    <Page id="pageChat" title="Asistente de Turnos" showNavButton="true" navButtonPress=".onSalir">
+      <headerContent>
+        <Button text="Mis Turnos" icon="sap-icon://appointment-2" press=".onVerTurnos" />
+      </headerContent>
+      <content>
+        <List
+          id="chatList"
+          items="{chat>/messages}"
+          showSeparators="None"
+          noDataText="Escribile al asistente para reservar tu turno"
+        >
+          <CustomListItem>
+            <VBox class="sapUiTinyMarginBegin sapUiTinyMarginEnd sapUiTinyMarginTop">
+              <Text text="{chat>autor}" class="sapUiTinyMarginBottom" />
+              <Text text="{chat>texto}" wrapping="true" />
+            </VBox>
+          </CustomListItem>
+        </List>
+      </content>
+      <footer>
+        <Toolbar>
+          <Input id="chatInput" placeholder="Escribí tu mensaje..." width="100%" submit=".onEnviar" />
+          <Button text="Enviar" type="Emphasized" press=".onEnviar" />
+        </Toolbar>
+      </footer>
+    </Page>
+
+    <!-- Pagina 3: mis turnos -->
+    <Page id="pageTurnos" title="Mis Turnos" showNavButton="true" navButtonPress=".onVolverChat">
+      <content>
+        <Table id="turnosTable" items="{turnos>/value}" noDataText="No tenés turnos reservados">
+          <columns>
+            <Column><Text text="Fecha" /></Column>
+            <Column><Text text="Hora" /></Column>
+            <Column><Text text="Médico" /></Column>
+            <Column><Text text="Estado" /></Column>
+            <Column><Text text="Motivo" /></Column>
+          </columns>
+          <ColumnListItem>
+            <cells>
+              <Text text="{turnos>fecha}" />
+              <Text text="{turnos>hora}" />
+              <Text text="{turnos>medico/apellido}, {turnos>medico/nombre}" />
+              <ObjectStatus text="{turnos>estado}" />
+              <Text text="{turnos>motivo}" />
+            </cells>
+          </ColumnListItem>
+        </Table>
+      </content>
+    </Page>
+
+  </App>
+</mvc:View>

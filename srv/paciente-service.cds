@@ -1,6 +1,10 @@
 using { centro.medico as cm } from '../db/schema';
 
-@requires: 'paciente'
+// authenticated-user (en vez del rol 'paciente') porque en dev los pacientes se
+// autentican por el comodin '*' de la auth mockeada, que da identidad pero no roles.
+// La proteccion real de datos la hace el @restrict de abajo (email = $user): cada
+// usuario ve SOLO las filas de su propio email. En prod, XSUAA igual asigna el rol.
+@requires: 'authenticated-user'
 service PacienteService {
 
   // Solo el paciente cuyo email coincide con el usuario logueado puede ver/editar su perfil
