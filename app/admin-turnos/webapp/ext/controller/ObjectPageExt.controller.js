@@ -10,7 +10,8 @@ sap.ui.define([
     metadata: {
       methods: {
         onConfirmarTurno: { public: true, final: true },
-        onVolverInicio: { public: true, final: true }
+        onVolverInicio: { public: true, final: true },
+        onPreguntarIA: { public: true, final: true }
       }
     },
 
@@ -97,6 +98,37 @@ sap.ui.define([
       }).catch(function (oError) {
         MessageBox.error("No se pudo confirmar el turno: " + oError.message);
       });
+    },
+
+    // Ejercicio de integracion de IA: le pasamos el motivo del turno a Claude
+    // y le pedimos que sugiera la especialidad. No usa el modelo OData de la
+    // vista (que apunta a AdminService) — es un fetch directo a nuestro propio
+    // servicio AiService, en /odata/v4/ai/chat, igual que probamos con curl.
+    onPreguntarIA: function () {
+      var oTurno = this.base.getView().getBindingContext().getObject();
+      var sMotivo = oTurno.motivo || "(sin motivo especificado)";
+      var sPregunta = "Un paciente de un centro medico escribio este motivo de consulta: \""
+        + sMotivo + "\". En una frase corta, sugerime a que especialidad medica correspondería.";
+
+      MessageToast.show("Preguntandole a la IA...");
+
+      fetch("/odata/v4/ai/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: sPregunta })
+      })
+        .then(function (oResponse) {
+          if (!oResponse.ok) {
+            throw new Error("HTTP " + oResponse.status);
+          }
+          return oResponse.json();
+        })
+        .then(function (oData) {
+          MessageBox.information(oData.value);
+        })
+        .catch(function (oError) {
+          MessageBox.error("No se pudo consultar a la IA: " + oError.message);
+        });
     }
 
   });

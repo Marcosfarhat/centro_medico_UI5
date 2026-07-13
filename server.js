@@ -1,3 +1,5 @@
+process.loadEnvFile()  // carga .env (ANTHROPIC_API_KEY, etc.) a process.env — nativo de Node, sin dependencias
+
 const cds = require('@sap/cds')
 
 // En desarrollo (mocked auth), inyectar automáticamente el usuario correcto
@@ -13,7 +15,7 @@ cds.on('bootstrap', (app) => {
 
     app.use((req, _res, next) => {
       // Sobreescribir siempre — ignorar credenciales cacheadas del browser
-      if (req.path.startsWith('/odata/v4/admin')) {
+      if (req.path.startsWith('/odata/v4/admin') || req.path.startsWith('/odata/v4/ai')) {
         req.headers.authorization = `Basic ${adminCreds}`
       } else if (req.path.startsWith('/odata/v4/paciente')) {
         req.headers.authorization = `Basic ${pacienteCreds}`

@@ -123,6 +123,10 @@
                     "CrearTurno": {
                       "press": ".extension.centro.medico.admin.adminturnos.ext.controller.ListReportExt.onCrearTurno",
                       "text": "Crear Turno"
+                    },
+                    "AsistenteIA": {
+                      "press": ".extension.centro.medico.admin.adminturnos.ext.controller.ListReportExt.onAbrirChat",
+                      "text": "Asistente de Turnos"
                     }
                   }
                 }
@@ -148,6 +152,10 @@
                     "VolverInicio": {
                       "press": ".extension.centro.medico.admin.adminturnos.ext.controller.ObjectPageExt.onVolverInicio",
                       "text": "Volver al inicio"
+                    },
+                    "PreguntarIA": {
+                      "press": ".extension.centro.medico.admin.adminturnos.ext.controller.ObjectPageExt.onPreguntarIA",
+                      "text": "Preguntarle a la IA"
                     }
                   }
                 }
