@@ -86,7 +86,9 @@ sap.ui.define([
       this._scrollChatAlFinal();
 
       var that = this;
-      fetch("/odata/v4/ai/bookingChat", {
+      // agendaChat (no bookingChat): la version admin del asistente, que ademas
+      // de reservar puede buscar, confirmar y anular turnos de la agenda.
+      fetch("/odata/v4/ai/agendaChat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ historyJson: JSON.stringify(this._aChatHistory) })

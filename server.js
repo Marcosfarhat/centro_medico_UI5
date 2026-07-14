@@ -15,8 +15,16 @@ cds.on('bootstrap', (app) => {
 
     app.use((req, _res, next) => {
       // Sobreescribir siempre — ignorar credenciales cacheadas del browser
-      if (req.path.startsWith('/odata/v4/admin') || req.path.startsWith('/odata/v4/ai')) {
+      if (req.path.startsWith('/odata/v4/admin') || req.path.startsWith('/odata/v4/ai/agendaChat')) {
+        // Solo la agenda (app de admin) recibe credenciales de admin.
         req.headers.authorization = `Basic ${adminCreds}`
+      } else if (req.path.startsWith('/odata/v4/ai')) {
+        // El resto del servicio de IA (bookingChat, chat) corre como un usuario
+        // autenticado SIN rol admin (lo acepta el comodin '*'): minimo privilegio
+        // para los endpoints del paciente. OJO: en dev esto es una simulacion por
+        // ruta (no hay login real del navegador) — la proteccion real del
+        // @requires:'admin' de agendaChat la hace XSUAA en produccion.
+        req.headers.authorization = `Basic ${Buffer.from('portal-paciente:x').toString('base64')}`
       } else if (req.path.startsWith('/odata/v4/paciente')) {
         // Si el caller manda el mail del paciente logueado (la app del asistente
         // lo pone en el header 'x-paciente-email'), usamos ESE mail como identidad,
