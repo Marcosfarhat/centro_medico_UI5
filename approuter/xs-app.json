@@ -1,6 +1,9 @@
 {
   "welcomeFile": "/launchpad.html",
   "authenticationMethod": "route",
+  "logout": {
+    "logoutEndpoint": "/logout"
+  },
   "routes": [
     {
       "source": "^/odata/(.*)$",

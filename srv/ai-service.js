@@ -95,8 +95,9 @@ const TOOLS_PACIENTE = [
 
 const PROMPT_AGENDA = `
 Sos el asistente interno de la agenda del Centro Médico, usado por el personal administrativo.
-Podés buscar turnos (por fecha, estado, paciente o médico), confirmarlos, anularlos, y también
-reservar turnos nuevos o registrar pacientes si el administrativo lo pide.
+Podés buscar turnos (por fecha, estado, paciente o médico), confirmarlos, anularlos, buscar
+pacientes y mostrar sus datos (por apellido, email o DNI, o todos), y también reservar turnos
+nuevos o registrar pacientes si el administrativo lo pide.
 
 Reglas:
 - Nunca inventes datos: usá siempre las herramientas para consultar la agenda real.
@@ -107,6 +108,19 @@ Reglas:
 `.trim();
 
 const TOOLS_AGENDA = TOOLS_PACIENTE.concat([
+  {
+    name: 'buscar_pacientes',
+    description: 'Busca pacientes y devuelve su ficha completa (nombre, apellido, dni, fechaNacimiento, telefono, email, obraSocial, numeroAfiliado). Todos los filtros son opcionales y se combinan; SIN ningún filtro devuelve TODOS los pacientes (por ej. para "dame los mails de todos los pacientes" llamá esta herramienta sin parámetros).',
+    input_schema: {
+      type: 'object',
+      properties: {
+        apellido: { type: 'string', description: 'Apellido o parte del apellido' },
+        email: { type: 'string', description: 'Email o parte del email' },
+        dni: { type: 'string', description: 'DNI o parte del documento' }
+      },
+      required: []
+    }
+  },
   {
     name: 'buscar_turnos',
     description: 'Busca turnos en la agenda. Todos los filtros son opcionales y se pueden combinar. Usar antes de confirmar o anular, para identificar el turno exacto.',
@@ -262,6 +276,26 @@ module.exports = cds.service.impl(async function () {
     },
 
     // --- herramientas exclusivas de la agenda (admin) ---
+
+    async buscar_pacientes({ apellido, email, dni } = {}) {
+      // Traemos todos y filtramos en JS: el LIKE de SQLite distingue acentos
+      // (no matchea "Diaz" con "Díaz"). Normalizando (sin tildes, en minusculas)
+      // la busqueda es insensible a acentos y mayusculas, como espera una recepcion.
+      // A la escala de una clinica (cientos de pacientes) traer todos es trivial.
+      const norm = (s) => (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+
+      const todos = await SELECT.from(Pacientes)
+        .columns('ID', 'nombre', 'apellido', 'dni', 'fechaNacimiento', 'telefono', 'email', 'obraSocial', 'numeroAfiliado')
+        .orderBy('apellido', 'nombre');
+
+      const pacientes = todos.filter((p) =>
+        (!apellido || norm(p.apellido).includes(norm(apellido))) &&
+        (!email || norm(p.email).includes(norm(email))) &&
+        (!dni || norm(p.dni).includes(norm(dni)))
+      );
+
+      return { cantidad: pacientes.length, pacientes };
+    },
 
     async buscar_turnos({ fecha, estado, apellido_paciente, apellido_medico }) {
       const where = {};

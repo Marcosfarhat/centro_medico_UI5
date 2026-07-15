@@ -29,9 +29,10 @@
     </Page>
 
     <!-- Pagina 2: asistente (chat) -->
-    <Page id="pageChat" title="Asistente de Turnos" showNavButton="true" navButtonPress=".onSalir">
+    <Page id="pageChat" title="Asistente de Turnos">
       <headerContent>
         <Button text="Mis Turnos" icon="sap-icon://appointment-2" press=".onVerTurnos" />
+        <Button text="Cerrar sesión" icon="sap-icon://log" press=".onSalir" />
       </headerContent>
       <content>
         <List
@@ -58,6 +59,9 @@
 
     <!-- Pagina 3: mis turnos -->
     <Page id="pageTurnos" title="Mis Turnos" showNavButton="true" navButtonPress=".onVolverChat">
+      <headerContent>
+        <Button text="Cerrar sesión" icon="sap-icon://log" press=".onSalir" />
+      </headerContent>
       <content>
         <Table id="turnosTable" items="{turnos>/value}" noDataText="No tenés turnos reservados">
           <columns>

@@ -97,6 +97,22 @@
     /* ── Colores por grupo ── */
     .tile.admin   { border-top: 3px solid #0064d9; }
     .tile.paciente { border-top: 3px solid #188918; }
+
+    /* ── Botón de cerrar sesión (a la derecha del header) ── */
+    .logout {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: white;
+      text-decoration: none;
+      font-size: 0.8125rem;
+      padding: 0.35rem 0.75rem;
+      border: 1px solid rgba(255,255,255,0.5);
+      border-radius: 0.375rem;
+      transition: background 0.15s;
+    }
+    .logout:hover { background: rgba(255,255,255,0.15); }
   </style>
 </head>
 <body>
@@ -104,6 +120,10 @@
   <header>
     <span style="font-size:1.25rem">🏥</span>
     <h1>Centro Médico</h1>
+    <!-- /logout lo maneja el approuter en produccion (ver approuter/xs-app.json):
+         invalida la sesion XSUAA y desloguea de TODAS las apps a la vez.
+         En dev (cds watch) no hay approuter, asi que esta ruta no responde. -->
+    <a class="logout" href="/logout">🔓 Cerrar sesión</a>
   </header>
 
   <main>
